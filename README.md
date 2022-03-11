@@ -13,5 +13,7 @@ make build
 make shell
 // Login to container
 make login
+// stop and remove the container
+make stop
 ```
 
