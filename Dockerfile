@@ -12,7 +12,8 @@ RUN wget https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -
 RUN git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions \
     && git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting \
     && sed -i 's/plugins=(git)/plugins=(git zsh-autosuggestions zsh-syntax-highlighting)/g' .zshrc \
-    && sed -i 's/ZSH_THEME="robbyrussell"/ZSH_THEME=obraun/g' .zshrc
+    && sed -i 's/ZSH_THEME="robbyrussell"/ZSH_THEME=obraun/g' .zshrc \
+    && echo "source /opt/rh/devtoolset-11/enable" >> .zshrc
 
 RUN ssh-keygen -A \
     && mkdir /root/.ssh \
@@ -26,8 +27,6 @@ EXPOSE 22
 RUN echo "source /opt/rh/devtoolset-11/enable" >> /etc/bashrc
 RUN source /etc/bashrc
 SHELL [ "/usr/bin/scl", "enable", "devtoolset-11"]
-
-WORKDIR /tmp
 
 RUN git clone https://github.com/redis/hiredis.git \
     && cd hiredis \
@@ -53,3 +52,5 @@ RUN git clone https://github.com/redis/redis.git \
     && make -j 8 \
     && make install \
     && cd .. && rm -rf redis
+
+WORKDIR /tmp
