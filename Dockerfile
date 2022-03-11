@@ -6,7 +6,9 @@ WORKDIR /root
 
 RUN yum install --nogpgcheck -y epel-release centos-release-scl \
     && yum install --nogpgcheck -y devtoolset-11-gcc-c++ wget bzip2 which git cmake3 openssh-server net-tools \
-    && yum install --nogpgcheck -y htop libuv-devel.x86_64 zsh
+    && yum install --nogpgcheck -y htop libuv-devel.x86_64 zsh nc
+
+RUN echo "source /opt/rh/devtoolset-11/enable" >> /etc/bashrc
 
 RUN wget https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | zsh || true
 RUN git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions \
@@ -19,14 +21,12 @@ RUN ssh-keygen -A \
     && mkdir /root/.ssh \
     && chmod 0700 /root/.ssh \
     && echo "root:root" | chpasswd \
-    && ln -s /etc/ssh/ssh_host_ed25519_key.pub /root/.ssh/authorized_keys
-RUN echo 'PermitRootLogin yes' >> /etc/ssh/sshd_config
+    && ln -s /etc/ssh/ssh_host_ed25519_key.pub /root/.ssh/authorized_keys \
+    && echo 'PermitRootLogin yes' >> /etc/ssh/sshd_config
 ENTRYPOINT /usr/sbin/sshd -E /tmp/sshd.log && /bin/bash
 EXPOSE 22
 
-RUN echo "source /opt/rh/devtoolset-11/enable" >> /etc/bashrc
-RUN source /etc/bashrc
-SHELL [ "/usr/bin/scl", "enable", "devtoolset-11"]
+SHELL [ "/usr/bin/scl", "enable", "devtoolset-11" ]
 
 RUN git clone https://github.com/redis/hiredis.git \
     && cd hiredis \
