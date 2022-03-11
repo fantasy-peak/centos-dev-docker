@@ -3,7 +3,8 @@ FROM centos:7.9.2009
 # ENV http_proxy="http://xxxx:8080" https_proxy="http://xxxx:8080"
 
 RUN yum install --nogpgcheck -y epel-release centos-release-scl \
-    && yum install --nogpgcheck -y devtoolset-11-gcc-c++ wget bzip2 which git cmake3 openssh-server net-tools htop libuv-devel.x86_64
+    && yum install --nogpgcheck -y devtoolset-11-gcc-c++ wget bzip2 which git cmake3 openssh-server net-tools \
+    && yum install --nogpgcheck -y htop libuv-devel.x86_64
 
 RUN ssh-keygen -A \
     && mkdir /root/.ssh \
@@ -36,5 +37,12 @@ RUN wget http://downloads.sourceforge.net/project/boost/boost/${BOOST_VERSION}/$
     && cd ${BOOST_DIR} \
     && ./bootstrap.sh -with-toolset=gcc \
     && ./b2 --without-python --prefix=/usr -j 8 link=shared runtime-link=shared install \
-    && cd .. && rm -rf ${BOOST_DIR} ${BOOST_DIR}.tar.bz2
+    && cd .. && rm -rf ${BOOST_DIR} ${BOOST_DIR}.tar.bz2 \
+    && ldconfig
+
+RUN git clone https://github.com/redis/redis.git \
+    && cd redis \
+    && make -j 8 \
+    && make install \
+    && cd .. && rm -rf redis
 
