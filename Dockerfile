@@ -7,16 +7,18 @@ WORKDIR /root
 
 RUN yum install --nogpgcheck -y epel-release centos-release-scl \
     && yum install --nogpgcheck -y devtoolset-11-gcc-c++ wget bzip2 which git cmake3 openssh-server net-tools \
-    && yum install --nogpgcheck -y htop libuv-devel.x86_64 zsh nc
+    && yum install --nogpgcheck -y htop libuv-devel.x86_64 zsh nc rh-python38-python.x86_64
 
 RUN echo "source /opt/rh/devtoolset-11/enable" >> /etc/bashrc
+RUN echo "source /opt/rh/rh-python38/enable" >> /etc/bashrc
 
 RUN wget https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | zsh || true
 RUN git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions \
     && git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting \
     && sed -i 's/plugins=(git)/plugins=(git zsh-autosuggestions zsh-syntax-highlighting)/g' .zshrc \
     && sed -i 's/ZSH_THEME="robbyrussell"/ZSH_THEME=obraun/g' .zshrc \
-    && echo "source /opt/rh/devtoolset-11/enable" >> .zshrc
+    && echo "source /opt/rh/devtoolset-11/enable" >> .zshrc \
+    && echo "source /opt/rh/rh-python38/enable" >> .zshrc
 
 RUN ssh-keygen -A \
     && mkdir /root/.ssh \
