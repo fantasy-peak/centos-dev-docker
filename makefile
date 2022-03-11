@@ -5,7 +5,7 @@ IMAGEVERSION=test
 CONTAINE_RNAME=test-centos
 
 build:
-	sudo docker build --no-cache -t $(IMAGENAME):$(IMAGEVERSION) .
+	sudo docker build . --no-cache -t $(IMAGENAME):$(IMAGEVERSION) --network host
 
 run:
 	sudo docker run -p 9000:8080 $(IMAGENAME):$(IMAGEVERSION)

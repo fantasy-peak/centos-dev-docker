@@ -2,6 +2,8 @@ FROM centos:7.9.2009
 
 # ENV http_proxy="http://xxxx:8080" https_proxy="http://xxxx:8080"
 ENV LANG=en_US.UTF-8
+ENV TZ=Asia/Shanghai
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 WORKDIR /root
 
