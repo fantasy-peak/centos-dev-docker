@@ -33,29 +33,7 @@ EXPOSE 22
 
 SHELL [ "/usr/bin/scl", "enable", "devtoolset-11" ]
 
-RUN git clone https://github.com/redis/hiredis.git \
-    && cd hiredis \
-    && mkdir build && cd build \
-    && cmake3 .. -DCMAKE_INSTALL_PREFIX=/usr \
-    && make install \
-    && cd ../.. && rm -rf hiredis
-
-ARG BOOST_VERSION=1.78.0
-ARG BOOST_DIR=boost_1_78_0
-ENV BOOST_VERSION ${BOOST_VERSION}
-
-RUN wget http://downloads.sourceforge.net/project/boost/boost/${BOOST_VERSION}/${BOOST_DIR}.tar.bz2 \
-    && tar --bzip2 -xf ${BOOST_DIR}.tar.bz2 \
-    && cd ${BOOST_DIR} \
-    && ./bootstrap.sh -with-toolset=gcc \
-    && ./b2 --without-python --prefix=/usr -j 8 link=shared runtime-link=shared install \
-    && cd .. && rm -rf ${BOOST_DIR} ${BOOST_DIR}.tar.bz2 \
-    && ldconfig
-
-RUN git clone https://github.com/redis/redis.git \
-    && cd redis \
-    && make -j 8 \
-    && make install \
-    && cd .. && rm -rf redis
+COPY ./install_lib.sh /root/
+RUN chmod 777 /root/install_lib.sh && /root/install_lib.sh full
 
 WORKDIR /tmp
