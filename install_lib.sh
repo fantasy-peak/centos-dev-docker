@@ -30,6 +30,16 @@ function start_install_hiredis_func() {
     cd ../.. && rm -rf hiredis
 }
 
+function start_install_openssl() {
+    wget http://www.openssl.org/source/openssl-1.1.1g.tar.gz --no-check-certificate
+    tar zxvf openssl-1.1.1g.tar.gz
+    cd openssl-1.1.1g
+    ./config --prefix=/usr --openssldir=/etc/ssl --libdir=lib no-shared zlib-dynamic
+    make -j 8
+    make install
+    cd .. && rm -rf openssl-1.1.1g.tar.gz openssl-1.1.1g
+}
+
 function start_work() {
     if [ $1 == "redis" ]; then
         start_install_redis_func
@@ -37,12 +47,14 @@ function start_work() {
         start_install_boost_func
     elif [ $1 == "hiredis" ];then
         start_install_hiredis_func
+    elif [ $1 == "openssl" ];then
+        start_install_openssl
     fi
 }
 
 string=$1
 if [ $string == "full" ]; then
-    string="hiredis,redis,boost"
+    string="hiredis,redis,boost,openssl"
 fi
 
 array=(${string//,/ })

@@ -9,7 +9,7 @@ WORKDIR /root
 
 RUN yum install --nogpgcheck -y epel-release centos-release-scl \
     && yum install --nogpgcheck -y devtoolset-11-gcc-c++ wget bzip2 which git cmake3 openssh-server net-tools \
-    && yum install --nogpgcheck -y htop libuv-devel.x86_64 zsh nc rh-python38-python.x86_64
+    && yum install --nogpgcheck -y htop libuv-devel.x86_64 zsh nc rh-python38-python.x86_64 zlib-devel.x86_64 python38-devel.x86_64
 
 RUN echo "source /opt/rh/devtoolset-11/enable" >> /etc/bashrc
 RUN echo "source /opt/rh/rh-python38/enable" >> /etc/bashrc
