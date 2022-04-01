@@ -12,7 +12,7 @@ run:
 
 shell:
 # sudo docker run -it --name $(CONTAINE_RNAME) -v ${PWD}:/tmp -p 2222:22 --network host --privileged $(IMAGENAME):$(IMAGEVERSION) /bin/bash
-	sudo docker run -d -it --name $(CONTAINE_RNAME) -v ${PWD}:/tmp -p 2222:22 $(IMAGENAME):$(IMAGEVERSION) /bin/zsh
+	sudo docker run -d -it --name $(CONTAINE_RNAME) -v ${PWD}:/tmp --sysctl net.ipv4.ip_local_port_range="1024 65000" -p 2222:22 $(IMAGENAME):$(IMAGEVERSION) /bin/zsh
 	make login
 
 stop:

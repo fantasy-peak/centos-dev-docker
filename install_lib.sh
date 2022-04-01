@@ -16,7 +16,7 @@ function start_install_boost_func() {
     tar --bzip2 -xf ${BOOST_DIR}.tar.bz2
     cd ${BOOST_DIR}
     ./bootstrap.sh -with-toolset=gcc
-    ./b2 --without-python --prefix=/usr -j 8 link=shared runtime-link=shared install
+    ./b2 --without-python --prefix=/usr -j 8 link=static runtime-link=shared install
     cd .. && rm -rf ${BOOST_DIR} ${BOOST_DIR}.tar.bz2
     ldconfig
 }
