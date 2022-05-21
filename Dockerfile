@@ -32,6 +32,7 @@ RUN echo 'fantasy ALL=NOPASSWD:ALL' >> /etc/sudoers
 
 USER fantasy
 WORKDIR /home/fantasy
+ENV PATH=/home/fantasy/bin:$PATH
 
 RUN echo -e "\n" | ssh-keygen -N "" &> /dev/null
 RUN cat .ssh/id_rsa.pub > .ssh/authorized_keys
